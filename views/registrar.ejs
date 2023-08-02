@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title><%- title %></title>
+		<%- include("components/importer")%>
+	</head>
+	<body>
+		<div data-role="page">
+			<div data-role="header">
+				<div class="ui-grid-a ui-responsive" style="padding: 0 10px;">
+					<div class="ui-block-a">
+						<h4 class="text-left"><a href="/">Logo</a></h4>
+					</div>
+					<div class="ui-block-b"><%- include("components/buttonConta") %></div>
+				</div>
+			</div>
+			<div data-role="main">
+				<h3 class="text-center">Bem vindo a tela de cadastro da <%- title%>!</h3>
+				<form data-registrar data-role="form" class="form">
+					<div class="ui-field-contain">
+						<label for="nome" >Nome</label>
+						<input type="text" name="nome" id="nome" placeholder="field name"/>
+					</div>
+					<div class="ui-field-contain">
+						<label for="email">Email</label>
+						<input type="email" name="email" id="email" placeholder="field email">
+					</div>
+					<div class="ui-field-contain">
+						<label for="password">Password</label>
+						<input type="password" name="password" id="password" placeholder="field password">
+					</div>
+					<div class="ui-field-contain">
+						<label for="passwordConf">Confirmar Password</label>
+						<input type="password" name="passwordConf" id="passwordConf" placeholder="field password confirmar">
+					</div>
+					<div class="ui-field-contain">
+						<label for="telefone">Telefone</label>
+						<input type="tel" name="telefone" id="telefone" placeholder="field telefone">
+					</div>
+					<div class="ui-field-contain">
+						<fieldset class="controlgroup">
+							<label for="notificacoa"> Me envia recentes notificações e atualizações.</label>
+							<input type="checkbox" name="notificacoa" id="notificacoa">
+						</fieldset>
+					</div>
+					<div class="form-group">
+						<button type="submit" id="registrar-btn" class="ui-btn ui-shadow">Registrar</button>
+					</div>
+				</form>
+				<div class="container">
+					<form data-form action="/galeria/eventos/3" enctype="multipart/form-data" method="post">
+						<input type="text" name="nome">
+						<input type="file" name="image" multiple="multiple">
+						<input type="submit" class="ui-btn ui-btn-active ui-btn-corner-all ui-btn-shadow" value="Enviar image"/>
+					</form>
+				</div>
+			<%- include("components/rodape")%>
+			<script src="/javascripts/form.js"></script>
+			<script>
+				$('#btn-registrar').addClass("ui-btn-active");
+				alerta("info",{msg:"a tela de <%=subtitle %> da <%= title%> ", destaque:"Bem vindo! "}).show(6000);
+				
+				
+				$('[data-form]').on('submit', function(e){
+					e.preventDefault()
+					e.target.submit()
+				})
+			</script>
+		</div>
+	</body>
+</html>

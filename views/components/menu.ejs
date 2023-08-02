@@ -1,0 +1,21 @@
+<nav data-role="header" class="ui-header ui-bar-inherit menu" role="" style="background-color:#edf0f4;" >
+	<div class="ui-grid-b ui-responsive" style="padding:0 10px">
+		<div class="ui-block-a">
+			<h2 class="ui-title" role="heading" aria-level="1">VShow</h>
+		</div>
+		<div class="ui-block-b">
+			<div class="center-search">	
+				<ul class="ui-shadow" data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="pesquisar registros..." data-insert="true">
+					<% eventos.forEach((registro, key)=>{%>
+					<%if(registro.publicado){%>
+						<li><a href="/comprar/<%= registro.evento %>/<%= registro.id %>"><%= registro.evento %></a></li>
+					<%}%>
+					<% }) %>
+				</ul>
+			</div>
+		</div>
+		<div class="ui-block-c">		
+			<%- include("buttonConta") -%>
+		</div>
+	</div>
+</nav>

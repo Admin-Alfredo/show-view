@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title><%- title %></title>
+		<%- include("components/importer")%>
+	</head>
+	<body>
+		<div data-role="page">
+			<div data-role="header">
+				<div class="ui-grid-a ui-responsive" style="padding: 0 10px;">
+					<div class="ui-block-a">
+						<h4 class="text-left"><a href="/">Logo</a></h4>
+					</div>
+					<div class="ui-block-b"><%- include("components/buttonConta") %></div>
+				</div>
+			</div>
+			<div data-role="main" style="margin-bottom:182px">
+				<h3 class="text-center">Bem vindo a tela de login da <%-title%><h3>
+				
+				<form data-login data-role="form" class="form">
+					<div class="ui-field-contain" style="margin:45px auto">
+						<label for="email">Email</label>
+						<input type="email" name="email" id="email" placeholder="field email">
+					</div>
+					<div class="ui-field-contain" style="margin:45px auto">
+						<label for="password">Password</label>
+						<input type="password" name="password" id="password" placeholder="field password">
+					</div>
+					<div class="form-group">
+						<input type="submit" id="registrar-btn" class="ui-btn ui-shadow ui-btn-inline" value="entrar"/>
+					</div>
+				</form>
+			</div>
+			<%- include("components/rodape")%>
+			<script src="/javascripts/form.js"></script>
+			<script>
+				
+				$('#btn-login').addClass("ui-btn-active");
+				if(localStorage.getItem("vskey")){
+					location.replace("/conta?vskey="+localStorage.getItem("vskey"))
+				}else{
+					alerta("erro",{msg:"a tela de <%=subtitle %> da <%= title%> ", destaque:"Bem vindo! "}).show(1000);
+				}
+			</script>
+		</div>
+	</body>
+</html>

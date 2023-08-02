@@ -1,0 +1,1 @@
+alert('scripto foncional v0.0.1');

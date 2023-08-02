@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+	<div class="a-overlay"></div>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title><%- title %></title>
+		<%- include("components/importer")%>
+		<style>
+			div[data-role=header]{
+				position:relative;
+			}
+			
+			.plus-btn{
+				position:absolute;
+				right:4.2977%;
+				padding:3px 10px;
+				border-radius:50%;
+				font-size:1.7em;
+				margin:15px 5px;
+				cursor:pointer;
+				transition: ease .4s;
+			}
+			.user-image{
+				cursor:pointer;
+				font-size:2em;
+				padding:20px;
+				background-color:#ccc;
+				border:1px solid #aaa;
+			}
+			input[type=file]{
+				/**display:none;**/
+			}
+			.icon-action{
+				position:absolute;
+				font-size:1.4em;
+				font-weight:100;
+				top:7px;
+				padding:5px;
+				border-radius:50%;
+				cursor:pointer;
+			}
+			.plus-btn:hover, .icon-action:hover{
+				background-color:#059;
+				box-shadow:0 1px 3px #888;
+				transition: ease .4s;
+			}
+			.plus-btn::after{
+				clear:both
+			}
+			.plus-btn::before{
+				clear:both
+			}
+			.publicado-ok{
+				background-color:#01a827
+			}
+			</style>
+	</head>
+	<body>
+		<div data-role="page">
+			<div data-role="tabs">
+				<div data-role="navbar">
+					<ul>
+						<li><a data-href="/">Home</a></li>
+						<li><a href="#pub">publicações</a></li>
+						<li><a href="#moni">monitorar</a></li>
+						<li><a href="#noti">notificações</a></li>
+					</ul>
+				</div>
+				<!--publicações-->
+				<div id="pub" >
+					<div data-role="header" style="background-color:#edf0f4;padding:5px;margin-bottom:20px;position:relative">
+						<span title="Novo evento" data-modal-show-plus class="plus-btn text-center color-primary" >+</span>
+						<span class="user-image glyphicon glyphicon-user">
+						<button data-logout class="ui-btn ui-btn-active ui-shadow" onclick="logout()">log out</button>
+						<!--<img id="usuario-image" alt="usuario" src="">--></span>
+					</div>
+					<div class="container">
+						<%eventos.forEach((registro, key)=>{%>
+						<div data-evento-id-<%-registro.id%> data-role="collapsible" style="background-color:#edf0f4;position:relative">
+							<span data-id="<%-registro.id%>" title='remover'  data-evento-remove class='icon-action color-primary glyphicon glyphicon-trash' style='right:5px'></span>
+							<span data-id="<%-registro.id%>" title='editar' data-evento-edit class='icon-action color-primary glyphicon glyphicon-pencil' style='right:50px'></span>
+							<span data-id="<%-registro.id%>" title='anexos' data-evento-anexos class='icon-action color-primary glyphicon glyphicon-paperclip' style='right:95px'></span>
+							<span data-id="<%-registro.id%>" title='publicar' data-evento-save class='icon-action color-primary glyphicon glyphicon-send <%if(registro.publicado){%> publicado-ok <%}%>' style='right:140px'></span>
+							<h4><%-registro.evento%></h4>
+						    <%-include("components/painelDescricao", {registro,realizador})%>
+						</div>
+						<%})%>
+					</div>
+					<div class="a-modal">
+						<div class="a-modal-header">
+							<h2>Novo evento</h2>
+							<div data-modal-close class="modal-close"><span class="glyphicon glyphicon-remove"></span></div>
+						</div>
+						<div class="a-modal-main">
+							<form data-form-evento action="/galeria/eventos/3" enctype="multipart/form-data" method="post">
+								<div id="info-evento">
+									<div class="row">
+										<div class="col col-sm col-md col-sm-6 col-md-6">
+											<div class="col col-sm col-md col-sm-12 col-md-12">
+												<label class="label-fields"for="NomeEvento" >Evento</label>
+											</div>
+											<div class="col col-sm col-md col-sm-12 col-md-12">
+												<input type="text" name="evento" id="NomeEvento">
+											</div>
+										</div>
+										<div class="col col-sm col-md col-sm-6 col-md-6">
+											<div class="col col-sm col-md col-sm-12 col-md-12">
+												<label for="data" class="label-fields">Data</label>
+											</div>
+											<div class="col col-sm col-md col-sm-12 col-md-12">
+												<input type="date" name="data" id="data">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col col-sm col-md col-sm-6 col-md-6">
+											<div class="col col-sm col-md col-sm-12 col-md-12">
+												<label class="label-fields"for="local" >Local</label>
+											</div>
+											<div class="col col-sm col-md col-sm-12 col-md-12">
+												<input type="text" name="local" id="local">
+											</div>
+										</div>
+										<div class="col col-sm col-md col-sm-6 col-md-6">
+											<div class="col col-sm col-md col-sm-12 col-md-12">
+												<label for="qntConvites" class="label-fields">Quantidade</label>
+											</div>
+											<div class="col col-sm col-md col-sm-12 col-md-12">
+												<input type="range" name="qntConvites" id="qntConvites" data-highlight="true" min="0" max="10000" value="50">
+											</div>
+										</div>
+									</div>
+									<div class="row" style="padding-left:1.7899%;padding-right:1.7899%;">
+										<div class="col col-sm col-sm-12 col-md-12">
+											<label for="descricao" class="label-fields">Descrição</label>
+										</div>
+										<div class="col col-sm col-sm-12 col-md-12">
+											<textarea type="text" name="descricao" id="descricao"></textarea>
+										</div>
+									</div>
+								</div>
+								<div id="image-evento">
+									<div class="ui-grid-solo">
+										<label for="imgMin"><span class="color-primary glyphicon glyphicon-picture"></span>&nbsp;(Width x Height)</label>											
+										<input type="file" name="imgMin" id="imgMin" multiple="multiple">
+										<div class="ui-block-a contain-drag-drop">
+											<div class="drop-image background" id="drop-image-min">a</div>
+										</div>
+									</div>
+									<div class="ui-grid-solo">
+										<label for="imgMed"><span class="color-primary glyphicon glyphicon-picture"></span>&nbsp;(Width x Height)</label>											
+										<input type="file" name="imgMed" id="imgMed" multiple>
+										<div class="ui-block-a  contain-drag-drop">
+											<div class="drop-image background" id="drop-image-med">b</div>
+										</div>
+									</div>
+									<div class="ui-grid-solo">
+										<label for="imgMax"><span class="color-primary glyphicon glyphicon-picture"></span>&nbsp;(Width x Height)</label>											
+										<input type="file" name="imgMax" id="imgMax" multiple>
+										<div class="ui-block-a  contain-drag-drop">
+											<div class="drop-image background" id="drop-image-max"></div>
+										</div>
+									</div>
+								</div>
+								<div class="a-modal-footer">
+									<div class="row">
+										<div class="col-sm col-sm-2 col-md col-md-2">
+											<button type="button" data-btn-status class="ui-btn ui-shadow ui-corner-all ui-btn-mini ui-btn-active">seguinte</button>
+										</div>
+										<div class="col-sm col-sm-2 col-md col-md-2">
+											<button type="button" data-modal-close class="ui-btn ui-shadow ui-corner-all ui-btn-mini ">cancelar</button>
+										</div>
+										<div class="col-sm col-sm-2 col-md col-md-2 offset-md-6">
+											<input type="submit" data-criar-evento class="ui-btn ui-shadow ui-corner-all ui-btn-mini ui-btn-active" value="criar"/>
+										</div>
+									</div>
+								</div>
+							</form>
+							<div data-dialog>
+								<div class="text-dialog text-center">
+									<strong class="text-dialog">Quer mesmo eliminar este evento</strong>
+								</div>
+								<div class="row" style="margin-bottom:5px;margin-top:15px">
+									<div class="col-sm col-md col-sm-4 col-md-4">
+										<button type="button" data-dialog-comfirm class="ui-btn ui-shadow ui-corner-all ui-btn-mini ui-btn-active">confirmar</button>
+									</div>
+									<div class="col-sm col-md col-sm-4 col-md-4">
+										<button type="button"  data-modal-close class="ui-btn ui-shadow ui-corner-all ui-btn-mini ">cancelar</button>
+									</div>
+								</div>
+							</div>
+							<!--FORM END-->
+						</div>
+					</div>
+					<!--MODAL END-->
+				</div>
+				<!--monitorar-->
+				<div id="moni">
+					<div data-role="header" style="background-color:#edf0f4;padding:5px;margin-bottom:20px;">
+						<span class="user-image glyphicon glyphicon-user"></span>
+					</div>
+				</div>
+				<!--notificações-->
+				<div id="noti">
+					<div data-role="header" style="background-color:#edf0f4;padding:5px;margin-bottom:20px;">
+						<span class="user-image glyphicon glyphicon-user"></span>
+					</div>
+				</div>
+			</div>
+			<script src="/javascripts/alert.js"></script>
+			<script src="/javascripts/anexos.js"></script>
+			<script src="/javascripts/form.js"></script>
+			<script>
+				alerta('sucesso',{destaque:"Bem vindo! ",msg:"<%-realizador.nome%>"}).show(3000);
+				$('[data-href]').on('click',function(){
+					if(this.getAttribute('data-href') && this.tagName === 'A'){
+						location.replace(this.getAttribute('data-href'));
+					}
+				})
+				
+				$(function(){
+					const vskey = localStorage.getItem('vskey');
+					
+					$("[data-role='collapsible']").css('background-color','#edf0f4');
+					
+					//inplementando controlos de acções de eventos;
+					
+					// accão remover evento;
+					$("[data-evento-remove]").on('click',function(event){
+						var id = event.target.getAttribute('data-id');
+						
+						//console.log("evento removido");
+						$('[data-form-evento]').hide();
+						$('[data-dialog]').show('', function(){
+							$('.a-modal').css('position','fixed');
+							$('[data-dialog-comfirm]').on('click', function(){
+								console.log("O evento com id "+id+" foi removido")
+								$('[data-evento-id-'+id+']').remove()
+								Modal().hide()
+								var url = "/eventos/"+id+"?vskey="+vskey;
+								request({uri:url,method:"delete",json:false},
+									function(err, res, data){
+										
+									}
+								)
+								//$('[data-dialog-comfirm]').off('click');
+							})
+						});
+						Modal().show(0.4)
+					});
+					$("[data-evento-edit]").on('click', function(event){
+						// accão editar evento;
+						console.log("editando evento")
+					});
+					
+					// acão salvar como publicidade evento;
+					$("[data-evento-save]").on('click', function(event){
+						var id = event.target.getAttribute('data-id');
+						
+						//console.log("publicar evento")
+						var url = "/eventos/"+id+"?vskey="+vskey;//url para atualizar o compo publicado 
+						
+						request({uri:"/eventos/"+id,method:"GET"},
+							function(err, _res, _data){
+								//,json:true,body:{publicado:true}
+								var dataParser = JSON.parse(_data);
+								console.log(!dataParser.publicado)
+								if(!dataParser.publicado){
+									request({uri:url,method:"PUT",json:true,body:{publicado:true}},
+										function(err, res, data){
+											if(err){
+												alerta('erro',{destaque:"Opss! ",msg:" ocorreu um erro ao publicar"}).show(2000);
+												return;
+											}
+											$(event.target).css({"background-color":"#01a827"})
+											alerta('sucesso',{destaque:"Ok! ",msg:"O evento "+dataParser.evento+" publicado com sucesso!"}).show(2000);
+										}
+									);
+								}else{
+									alerta('aviso',{destaque:"Opss! ",msg:" o evento "+dataParser.evento+" já está publicado"}).show(2000);
+								}
+							}
+						);
+					})
+					$("[data-evento-anexos]").on('click', function(event){
+						// accão anexos, visualizar ou editar as imagens do evento;
+						console.log("visualizar anexos")
+					})
+				});
+				function logout(){
+					if(localStorage.getItem('vskey')){
+						localStorage.removeItem('vskey');
+					}
+					request({uri:"/logout",method:"GET"},(err, res, data)=>{
+						location.replace("/")
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
